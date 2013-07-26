@@ -56,7 +56,7 @@ function compare_kernel($j, $k){
 }
 
 $kernels = array_map(function($kernel){
-	var_dump($kernel);
+	//var_dump($kernel);
 	$reduced = array_reduce($kernel,function($j, $k){
 		if (is_null($j)) return $k;
 		return compare_kernel($j[1],$k[1]) ? $j : $k;
