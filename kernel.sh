@@ -69,17 +69,23 @@ foreach ($kernels as $version => $version_long){
 }
 
 do {
-echo 'Enter kernel version: ';
-$kernel = trim(fgets(STDIN));
-$valid = isset($kernels[$kernel]);
-if (!$valid) echo 'Invalid entry.'.PHP_EOL;
+	if ($argc > 1){
+		if (strlen($kernel = trim($argv[1])) == 0) throw new Exception('Could not find requested kernel!');
+		$valid = isset($kernels[$kernel]);
+		if (!$valid) throw new Exception('Could not find requested kernel!');
+	} else {
+		echo 'Enter kernel version: ';
+		$kernel = trim(fgets(STDIN));
+		$valid = isset($kernels[$kernel]);
+		if (!$valid) echo 'Invalid entry.'.PHP_EOL;
+	}
 } while (!$valid);
 
 $dom->loadHTMLFile($kernel_url = SERVER_URL.$kernels[$kernel]);
 $sxml = simplexml_import_dom($dom);
 $sxml_rows = $sxml->xpath('//tr/td/a[starts-with(text(),"linux-")]');
 
-$install_command = 'sudo dpkg -i';
+$install_command = ($_SERVER['USER'] == 'root' ? '' : 'sudo ').'dpkg -i';
 
 foreach ($sxml_rows as $sxml_row){
 	$string = (string)$sxml_row;
@@ -89,7 +95,10 @@ foreach ($sxml_rows as $sxml_row){
 		$install_command .= ' '.$string;
 	}
 }
-echo 'Install? ';
-$install = trim(fgets(STDIN));
-if (strtolower($install) == 'y') passthru($install_command);
+if ($argc > 1){
+	if (isset($argv[2]) && strtolower(substr(trim($argv[1]),0,1)) == 'y') passthru($install_command);
+} else {
+	echo 'Install? ';
+	if (strtolower(substr(trim(fgets(STDIN)),0,1)) == 'y') passthru($install_command);
+}
 ?>
