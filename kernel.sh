@@ -16,7 +16,8 @@ $kernels = array();
 foreach ($sxml_rows as $sxml_row){
 	$string = (string)$sxml_row;
 	$matches = array();
-	if (preg_match('/^v(3\\.[0-9]+)(?:\\.([\\.0-9]+))?(?:-rc([0-9]+))?(?:-([a-z]+))\\/$/',$string,$matches)){
+	#if (preg_match('/^v(4\\.[0-9]+)(?:\\.([\\.0-9]+))?(?:-rc([0-9]+))?(?:-([a-z]+))\\/$/',$string,$matches)){
+	if (preg_match('/^v(4\\.[0-9]+)(?:\\.([\\.0-9]+))?(?:-rc([0-9]+))?\\/$/',$string,$matches)){
 		array_shift($matches);
 		//$version = array_shift($matches);
 		//$kernels[$version][] = $string.' '.implode(' ',$matches);
@@ -47,10 +48,11 @@ function compare_kernel($j, $k){
 		if ($j_val === 0) return true;
 		return $j_val > $k_val && $k_val !== 0;
 	}
+
 	//3 release
-	$j_val = substr($j[3],0,1);
-	$k_val = substr($k[3],0,1);
-	if ($j_val !== $k_val) return $j_val > $k_val;
+//	$j_val = substr($j[3],0,1);
+//	$k_val = substr($k[3],0,1);
+//	if ($j_val !== $k_val) return $j_val > $k_val;
 	
 	throw new Exception();
 }
