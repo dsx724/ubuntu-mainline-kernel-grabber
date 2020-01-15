@@ -29,8 +29,8 @@ function compare_kernel($j, $k){
 	//0 kernel version - ignored
 
 	//1 kernel subversion - empty = 0
-	$j_sub = isset($j[1]) ? explode('.',$j[1]) : '';
-	$k_sub = isset($k[1]) ? explode('.',$k[1]) : '';
+	$j_sub = explode('.',$j[1] ?? '-1');
+	$k_sub = explode('.',$k[1] ?? '-1');
 	$i = 0;
 	do {
 		$j_set = isset($j_sub[$i]);
@@ -92,6 +92,7 @@ $install_command = ($_SERVER['USER'] == 'root' ? '' : 'sudo ').'dpkg -i';
 foreach ($sxml_rows as $sxml_row){
 	$string = (string)$sxml_row;
 	if (preg_match('/(amd64|all)\\.deb$/',$string)){
+		if (strpos($string,'lowlatency') !== false) continue;
 		echo $string.PHP_EOL;
 		copy($kernel_url.$string,$string);
 		$install_command .= ' '.$string;
