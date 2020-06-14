@@ -83,8 +83,14 @@ do {
 	}
 } while (!$valid);
 
+$arch = trim(`dpkg --print-architecture`);
 $dom->loadHTMLFile($kernel_url = SERVER_URL.$kernels[$kernel]);
 $sxml = simplexml_import_dom($dom);
+if ($sxml_rows = $sxml->xpath("//tr/td/a[text()=\"$arch/\"]")){
+	$dom->loadHTMLFile($kernel_url = SERVER_URL.$kernels[$kernel].$arch.'/');
+	echo $kernel_url.PHP_EOL;
+	$sxml = simplexml_import_dom($dom);
+}
 $sxml_rows = $sxml->xpath('//tr/td/a[starts-with(text(),"linux-")]');
 
 $install_command = ($_SERVER['USER'] == 'root' ? '' : 'sudo ').'dpkg -i';
