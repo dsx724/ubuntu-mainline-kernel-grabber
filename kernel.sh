@@ -17,7 +17,7 @@ foreach ($sxml_rows as $sxml_row){
 	$string = (string)$sxml_row;
 	$matches = array();
 	#if (preg_match('/^v(4\\.[0-9]+)(?:\\.([\\.0-9]+))?(?:-rc([0-9]+))?(?:-([a-z]+))\\/$/',$string,$matches)){
-	if (preg_match('/^v([45]\\.[0-9]+)(?:\\.([\\.0-9]+))?(?:-rc([0-9]+))?\\/$/',$string,$matches)){
+	if (preg_match('/^v([456]\\.[0-9]+)(?:\\.([\\.0-9]+))?(?:-rc([0-9]+))?\\/$/',$string,$matches)){
 		array_shift($matches);
 		//$version = array_shift($matches);
 		//$kernels[$version][] = $string.' '.implode(' ',$matches);
